@@ -40,7 +40,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     protected WebView createViewInstance(ThemedReactContext reactContext) {
         WebView root = super.createViewInstance(reactContext);
         root.addJavascriptInterface(new JavascriptBridge(root), "WebViewBridge");
-        root.setWebChromeClient(new VideoWebChromeClient(reactContext.getCurrentActivity(), webView) {
+        root.setWebChromeClient(new VideoWebChromeClient(reactContext.getCurrentActivity(), root) {
           @Override
           public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             callback.invoke(origin, true, false);
