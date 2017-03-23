@@ -1,4 +1,4 @@
-package com.facebook.react.views.webview;
+package com.github.alinz.reactnativewebviewbridge;
 
 import android.app.Activity;
 import android.graphics.Color;
