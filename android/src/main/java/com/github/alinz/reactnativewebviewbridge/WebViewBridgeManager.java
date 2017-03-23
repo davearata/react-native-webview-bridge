@@ -12,6 +12,9 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
 public class WebViewBridgeManager extends ReactWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
 
@@ -37,6 +40,12 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     protected WebView createViewInstance(ThemedReactContext reactContext) {
         WebView root = super.createViewInstance(reactContext);
         root.addJavascriptInterface(new JavascriptBridge(root), "WebViewBridge");
+        root.setWebChromeClient(new VideoWebChromeClient(reactContext.getCurrentActivity(), webView) {
+          @Override
+          public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+            callback.invoke(origin, true, false);
+         }
+        });
         return root;
     }
 
