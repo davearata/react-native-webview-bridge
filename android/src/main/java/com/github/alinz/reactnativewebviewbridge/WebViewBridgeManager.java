@@ -2,10 +2,13 @@ package com.github.alinz.reactnativewebviewbridge;
 
 import android.webkit.WebView;
 
+import android.app.Activity;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.views.webview.ReactWebViewManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.bridge.ReactApplicationContext;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,6 +22,13 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
 
     public static final int COMMAND_SEND_TO_BRIDGE = 101;
+
+    private ReactApplicationContext context;
+
+    public WebViewBridgeManager (ReactApplicationContext context) {
+      super();
+      this.context = context;
+    }
 
     @Override
     public String getName() {
@@ -40,7 +50,10 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     protected WebView createViewInstance(ThemedReactContext reactContext) {
         WebView root = super.createViewInstance(reactContext);
         root.addJavascriptInterface(new JavascriptBridge(root), "WebViewBridge");
-        root.setWebChromeClient(new VideoWebChromeClient(reactContext.getCurrentActivity(), root));
+        final Activity activity = this.context.getCurrentActivity();
+        if (activity != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+          root.setWebChromeClient(new VideoWebChromeClient(activity, root));
+        }
         return root;
     }
 

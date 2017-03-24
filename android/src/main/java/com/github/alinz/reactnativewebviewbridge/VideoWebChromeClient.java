@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.util.Log;
 
 import static android.view.ViewGroup.LayoutParams;
 
@@ -32,7 +33,7 @@ public class VideoWebChromeClient extends WebChromeClient {
 
   @Override
   public void onShowCustomView(View view, CustomViewCallback callback) {
-    if (mVideoView != null) {
+    if (mVideoView != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
       callback.onCustomViewHidden();
       return;
     }
@@ -50,7 +51,7 @@ public class VideoWebChromeClient extends WebChromeClient {
 
   @Override
   public void onHideCustomView() {
-    if (mVideoView == null) {
+    if (mVideoView == null || android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT) {
       return;
     }
 
